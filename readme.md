@@ -17,7 +17,7 @@ Features
 * Fully configurable via config
 * Timestamping of images
 * Storage of images on S3 or local disk
-* Driver based storage backed by dotsunited/Cabinet
+* Driver based storage backed by [dotsunited/Cabinet](http://github.com/dotsunited/Cabinet)
 
 Installation
 ------------
