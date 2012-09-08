@@ -28,11 +28,11 @@ while (1) {
 	if (($counter != 1 && $counter < 10) || ($counter % 10 == 0)) {
 		// Night
 		if ($timeline->is_greyscale()) {
-			$timeline->set_movement_threshold(0.94);
+			$timeline->set_movement_threshold($config['night_threshold']);
 		}
 		// Day
 		else {
-			$timeline->set_movement_threshold(0.97);
+			$timeline->set_movement_threshold($config['day_threshold']);
 		}
 	}
 
