@@ -7,12 +7,15 @@ spl_autoload_register(array('Autoloader', 'load'));
 // Config
 $config = require_once('config.php');
 
+// Storage
+require_once 'libraries/AWSSDKforPHP/sdk.class.php';
+$storage = \DotsUnited\Cabinet\Cabinet::factory($config['cabinet_adapter'], $config[$config['cabinet_settings']]);
+
 
 // The business
 $cam = Cam::forge($config['cam_ip'], $config['cam_port'])->connect();
 $timeline = ImgTimeline::forge($config['timeline_size'])->set_debug(true);
-$recorder = Recorder::forge($config['record_min_length']);
-
+$recorder = Recorder::forge($config['record_min_length'], $storage);
 
 $counter = 0;
 
@@ -25,7 +28,7 @@ while (1) {
 	if (($counter != 1 && $counter < 10) || ($counter % 10 == 0)) {
 		// Night
 		if ($timeline->is_greyscale()) {
-			$timeline->set_movement_threshold(0.94);
+			$timeline->set_movement_threshold(1);
 		}
 		// Day
 		else {

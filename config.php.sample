@@ -5,7 +5,7 @@ return array(
 	'cam_port' => 80,
 	'record_min_length' => 30,
 	'timeline_size' => 6, // Max number of frames stored at any one time. Will be appended to video pre-movement
-	'cabinet_adapter' => '\DotsUnited\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
+	'cabinet_adapter' => '\Phil\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
 	'cabinet_settings' => 'aws', // Any subkey of this array. Should be an array
 
 	// AWS Settings
@@ -19,7 +19,7 @@ return array(
 
 	// Stream Settings
 	'stream' => array(
-		'base_path' => '',
+		'base_path' => __DIR__.'/out/',
 		'base_uri' => '',
 	),
 );
