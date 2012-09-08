@@ -1,16 +1,16 @@
 <?php
 
-// Classes
-require_once('classes/cam.php');
-require_once('classes/img_timeline.php');
-require_once('classes/recorder.php');
+// Autoloader
+require_once('autoloader.php');
+spl_autoload_register(array('Autoloader', 'load'));
 
+
+// The business
 $cam = Cam::forge('172.20.0.15', 80)->connect();
 $timeline = ImgTimeline::forge(6)->set_debug(true);
 $recorder = Recorder::forge(30);
 
 $counter = 0;
-$greyscale = false;
 
 while (1) {
 	$timeline->add_raw_image($cam->get_jpeg());
@@ -22,22 +22,10 @@ while (1) {
 		// Night
 		if ($timeline->is_greyscale()) {
 			$timeline->set_movement_threshold(0.94);
-
-			if (!$greyscale) {
-				var_dump(date('r').' Night!');
-			}
-
-			$greyscale = true;
 		}
 		// Day
 		else {
 			$timeline->set_movement_threshold(0.97);
-
-			if ($greyscale) {
-				var_dump(date('r').' Day!');
-			}
-
-			$greyscale = false;
 		}
 	}
 
