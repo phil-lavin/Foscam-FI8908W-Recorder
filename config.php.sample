@@ -7,7 +7,7 @@ return array(
 	'night_threshold' => 0.94,
 	'record_min_length' => 30,
 	'timeline_size' => 6, // Max number of frames stored at any one time. Will be appended to video pre-movement
-	'cabinet_adapter' => '\Phil\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
+	'cabinet_adapter' => '\DotsUnited\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
 	'cabinet_settings' => 'aws', // Any subkey of this array. Should be an array
 
 	// AWS Settings
