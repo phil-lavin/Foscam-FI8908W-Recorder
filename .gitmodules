@@ -1,0 +1,3 @@
+[submodule "libraries/cabinet"]
+	path = libraries/cabinet
+	url = https://github.com/dotsunited/Cabinet
