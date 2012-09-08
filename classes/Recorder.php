@@ -30,6 +30,19 @@ class Recorder {
 		$this->started = time();
 		$this->date_dir = date('Y-m-d_H:i:s', $this->started);
 		$this->frame = 0;
+
+		// Add date_dir to metadata file
+		try {
+			$meta = $this->storage->read('.meta');
+		}
+		catch (\Exception $e) {
+
+		}
+		$meta = $meta ? json_decode($meta, true) : array('recordings'=>array());
+
+		// Modify and write
+		$meta['recordings'][] = $this->date_dir;
+		$this->storage->write('.meta', json_encode($meta));
 	}
 
 	public function stop() {
