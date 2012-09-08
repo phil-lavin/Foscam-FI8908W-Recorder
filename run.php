@@ -4,11 +4,15 @@
 require_once('autoloader.php');
 spl_autoload_register(array('Autoloader', 'load'));
 
+// Config
+$config = require_once('config.php');
+
 
 // The business
-$cam = Cam::forge('172.20.0.15', 80)->connect();
-$timeline = ImgTimeline::forge(6)->set_debug(true);
-$recorder = Recorder::forge(30);
+$cam = Cam::forge($config['cam_ip'], $config['cam_port'])->connect();
+$timeline = ImgTimeline::forge($config['timeline_size'])->set_debug(true);
+$recorder = Recorder::forge($config['record_min_length']);
+
 
 $counter = 0;
 
