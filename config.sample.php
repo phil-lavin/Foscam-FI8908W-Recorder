@@ -5,7 +5,8 @@ return array(
 	'cam_port' => 80,
 	'day_threshold' => 0.97,
 	'night_threshold' => 0.94,
-	'record_min_length' => 30,
+	'record_min_length' => 30, // Record for at least this long, even if no further movement
+	'resume_recording_within' => 30, // If more movement is detected, resume the previous recording (value is seconds)
 	'timeline_size' => 6, // Max number of frames stored at any one time. Will be appended to video pre-movement
 	'cabinet_adapter' => '\DotsUnited\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
 	'cabinet_settings' => 'aws', // Any subkey of this array. Should be an array

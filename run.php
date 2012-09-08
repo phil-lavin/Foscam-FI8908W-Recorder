@@ -37,8 +37,8 @@ while (1) {
 	}
 
 	if (!$recorder->started() && $timeline->has_movement()) {
-		// Restart if we've been recording in the last 30 seconds
-		if ($recorder->last_run() > time() - 30) {
+		// Restart if we've been recording in the last `resume_recording_within` seconds
+		if ($recorder->last_run() > time() - $config['resume_recording_within']) {
 			$recorder->restart();
 		}
 		else {
