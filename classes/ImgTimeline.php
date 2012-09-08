@@ -18,9 +18,6 @@ class ImgTimeline {
 	protected $timeline = array();
 	protected $prev_img = null;
 
-	// Streams
-	protected $debug_log;
-
 	// Stamp position constants
 	const TOP_LEFT = 1;
 	const BOTTOM_LEFT = 2;
@@ -29,7 +26,6 @@ class ImgTimeline {
 
 	protected function __construct($size) {
 		$this->size = $size;
-		$this->debug_log = fopen('diff.csv', 'a');
 	}
 
 	public static function forge($size) {
@@ -141,8 +137,6 @@ class ImgTimeline {
 			$diff = null;
 
 		echo '   '.$diff."\r";
-
-		fwrite($this->debug_log, $diff."\n");
 
 		// Store the original
 		$this->prev_img = $img;
