@@ -25,7 +25,7 @@ Installation
 * Clone this repo. E.g. git clone git://github.com/phil-lavin/Foscam-FI8908W-Recorder.git
 * cd into the clone directory
 * Init the submodules. I.e. git submodule update --init
-* Copy config.php.sample to config.php
+* Copy config.sample.php to config.php
 * Edit the config as required
 
 Running
