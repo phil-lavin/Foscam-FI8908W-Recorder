@@ -11,7 +11,7 @@ return array(
 	// AWS Settings
 	'aws' => array(
 		'aws_key' => '',
-		'aws_secret' => '',
+		'aws_secret_key' => '',
 		'bucket' => '',
 		'storage_class' => 'STANDARD', // STANDARD or REDUCED_REDUNDANCY
 		'acl' => 'private', // private, public-read, public-read-write, authenticated-read, bucket-owner-read or bucket-owner-full-control
