@@ -25,6 +25,7 @@ Features
 * Timestamping of images
 * Storage of images on S3 or local disk
 * Driver based storage backed by [dotsunited/Cabinet](http://github.com/dotsunited/Cabinet)
+* Notifications by e-mail and SMS
 
 Installation
 ------------
