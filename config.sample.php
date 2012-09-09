@@ -10,6 +10,26 @@ return array(
 	'timeline_size' => 6, // Max number of frames stored at any one time. Will be appended to video pre-movement
 	'cabinet_adapter' => '\DotsUnited\Cabinet\Adapter\AmazonS3Adapter', // AmazonS3Adapter or StreamAdapter
 	'cabinet_settings' => 'aws', // Any subkey of this array. Should be an array
+	'send_sms' => false, // Send SMS on movement. Need to configure the sms section below
+	'send_email' => false, // Send e-mail on movement. Need to configure the e-mail section below
+
+	// tm4b.com SMS settings
+	'sms' => array(
+		'username' => 'yourusername',
+		'password' => 'yourPassWord',
+		'send_to' => '447943867756', // MSIDN format
+		'from_name' => 'CamNotifier', // No spaces
+		'message' => 'Movement detected on camera!',
+		'email' => 'your@email.com', // Failure notifications will be sent here
+	),
+
+	// E-mail notification settings
+	'email' => array(
+		'to_address' => 'your@email.com',
+		'from_address' => 'Cam Notifier <cam@email.com>',
+		'subject' => 'Movement detected on camera!',
+		'message' => 'Movement detected on camera!',
+	),
 
 	// AWS Settings
 	'aws' => array(

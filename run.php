@@ -41,7 +41,23 @@ while (1) {
 		if ($recorder->last_run() > time() - $config['resume_recording_within']) {
 			$recorder->restart();
 		}
+		// New recordings
 		else {
+			// Notify
+			if ($config['send_email']) {
+				mail($config['email']['to_address'], $config['email']['subject'], $config['email']['message'], "From: {$config['email']['from_address']}");
+			}
+			if ($config['send_sms']) {
+				$sms = SMS::forge($config['sms']['username'], $config['sms']['password']);
+
+				try {
+					$sms->send($config['sms']['send_to'], $config['sms']['from_name'], $config['sms']['message']);
+				}
+				catch (\SMS_Failed_Exception $e) {
+					mail($config['sms']['email'], 'SMS Send Failure', $e->getMessage());
+				}
+			}
+
 			$recorder->start();
 		}
 
