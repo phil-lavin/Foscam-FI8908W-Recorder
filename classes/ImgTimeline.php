@@ -131,10 +131,17 @@ class ImgTimeline {
 			array_shift($this->timeline);
 
 		// Get the diff with the previous, if there is one
-		if ($this->prev_img)
-			$diff = $this->prev_img->compareImages($img, $this->diff_metric)[1];
-		else
+		if ($this->prev_img) {
+			try {
+				$diff = $this->prev_img->compareImages($img, $this->diff_metric)[1];
+			}
+			catch (ImagickException $e) {
+				$diff = 1; // Skip if we failed to compare
+			}
+		}
+		else {
 			$diff = null;
+		}
 
 		echo '   '.$diff."\r";
 
