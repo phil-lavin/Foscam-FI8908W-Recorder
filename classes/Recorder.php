@@ -36,8 +36,9 @@ class Recorder {
 			$meta = $this->storage->read('.meta');
 		}
 		catch (\Exception $e) {
-
+			$meta = null;
 		}
+
 		$meta = $meta ? json_decode($meta, true) : array('recordings'=>array());
 
 		// Modify and write
