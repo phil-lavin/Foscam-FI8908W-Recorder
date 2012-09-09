@@ -7,6 +7,13 @@ Intro
 This is recorder code written in PHP for Foscam FI8908W and similar IP cameras. It's sort of designed to be used out of the box but is mostly to give
 you an idea of the protocols for use in your own code.
 
+Requirements
+------------
+
+* PHP >= 5.4
+* imagick extension
+* A moderate CPU - it's extemely CPU heavy. I'm running on a 2.00GHz Celeron without issue - I wouldn't try running on a low powered ARM, etc.
+
 Features
 --------
 
