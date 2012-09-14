@@ -68,34 +68,37 @@ class ImgTimeline {
 		$img = end($this->timeline)['image'];
 		$geo = $img->getImageGeometry();
 
-		// Define the text data
-		$draw = new ImagickDraw();
-		$draw->setFillAlpha(1);
-		$draw->setFontSize(12);
-		$draw->setTextUnderColor('#ffffff');
+		try {
+			// Define the text data
+			$draw = new ImagickDraw();
+			$draw->setFillAlpha(1);
+			$draw->setFontSize(12);
+			$draw->setTextUnderColor('#ffffff');
 
-		// Get the metrics of the text in the font
-		$text_metrics = $img->queryFontMetrics($draw, $text);
+			// Get the metrics of the text in the font
+			$text_metrics = $img->queryFontMetrics($draw, $text);
 
-		// Calc the position(s)
-		$positions = array();
-		if ($position & static::TOP_LEFT) {
-			$positions[] = array('x'=>10, 'y'=>10 + $text_metrics['textHeight']);
-		}
-		if ($position & static::BOTTOM_LEFT) {
-			$positions[] = array('x'=>10, 'y'=>$geo['height'] - $text_metrics['textHeight']);
-		}
-		if ($position & static::TOP_RIGHT) {
-			$positions[] = array('x'=>$geo['width'] - $text_metrics['textWidth'] - 10, 'y'=>10 + $text_metrics['textHeight']);
-		}
-		if ($position & static::BOTTOM_RIGHT) {
-			$positions[] = array('x'=>$geo['width'] - $text_metrics['textWidth'] - 10, 'y'=>$geo['height'] - $text_metrics['textHeight']);
-		}
+			// Calc the position(s)
+			$positions = array();
+			if ($position & static::TOP_LEFT) {
+				$positions[] = array('x'=>10, 'y'=>10 + $text_metrics['textHeight']);
+			}
+			if ($position & static::BOTTOM_LEFT) {
+				$positions[] = array('x'=>10, 'y'=>$geo['height'] - $text_metrics['textHeight']);
+			}
+			if ($position & static::TOP_RIGHT) {
+				$positions[] = array('x'=>$geo['width'] - $text_metrics['textWidth'] - 10, 'y'=>10 + $text_metrics['textHeight']);
+			}
+			if ($position & static::BOTTOM_RIGHT) {
+				$positions[] = array('x'=>$geo['width'] - $text_metrics['textWidth'] - 10, 'y'=>$geo['height'] - $text_metrics['textHeight']);
+			}
 
-		// Add the text
-		foreach ($positions as $position) {
-			$img->annotateImage($draw, $position['x'], $position['y'], 0, $text);
+			// Add the text
+			foreach ($positions as $position) {
+				$img->annotateImage($draw, $position['x'], $position['y'], 0, $text);
+			}
 		}
+		catch (\Exception $e) {}
 
 		// Return myself for chaining
 		return $this;
@@ -103,24 +106,29 @@ class ImgTimeline {
 
 	public function is_greyscale() {
 		if ($this->prev_img) {
-			$test_img = (clone $this->prev_img);
-			$test_img->setColorspace(Imagick::COLORSPACE_HSB);
-			return $test_img->getImageChannelMean(Imagick::COLOR_GREEN)['mean'] < 22000;
+			try {
+				$test_img = (clone $this->prev_img);
+				$test_img->setColorspace(Imagick::COLORSPACE_HSB);
+				return $test_img->getImageChannelMean(Imagick::COLOR_GREEN)['mean'] < 22000;
+			}
+			catch (\Exception $e) {}
 		}
 
 		return false;
 	}
 
 	public function add_raw_image($img) {
-		// Make an image magick image from the raw data
-		$img_imagick = new Imagick();
-		$img_imagick->readImageBlob($img);
+		try {
+			// Make an image magick image from the raw data
+			$img_imagick = new Imagick();
+			$img_imagick->readImageBlob($img);
 
-		// Add it
-		$this->add_imagick_image($img_imagick);
+			// Add it
+			$this->add_imagick_image($img_imagick);
 
-		// Return myself for chaining
-		return $this;
+			// Return myself for chaining
+			return $this;
+		} catch (\Exception $e) {}
 	}
 
 	public function add_imagick_image(Imagick $img) {
