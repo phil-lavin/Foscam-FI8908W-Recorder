@@ -106,6 +106,7 @@ class Cam {
 
 		// Start the stream using the code from above
 		$this->stream_sock = fsockopen($this->ip, $this->port);
+		stream_set_blocking($this->stream_sock, 0);
 		fwrite($this->stream_sock, $this->stream_init.$code);
 
 		// Clear the stream buffer
@@ -145,8 +146,14 @@ class Cam {
 		// Keep the stream alive
 		$this->keep_alive();
 
+		// Stop inf loop
+		$loop_start = time();
+
 		// Read until we have an image
 		while (substr_count($this->stream_buffer, 'MO_V') < 2) {
+			if ($loop_start + 30 < time())
+				throw new ImageFailedException("Timed out getting image");
+
 			$buffer = fread($this->stream_sock, 204800);
 
 			if ($buffer === false)
@@ -169,5 +176,4 @@ class Cam {
 	}
 }
 
-
-
+class ImageFailedException extends \Exception {}
