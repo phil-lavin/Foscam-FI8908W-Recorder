@@ -43,7 +43,11 @@ class Recorder {
 
 		// Modify and write
 		$meta['recordings'][] = $this->date_dir;
-		$this->storage->write('.meta', json_encode($meta));
+
+		try {
+			$this->storage->write('.meta', json_encode($meta));
+		}
+		catch (\Exception $e) {}
 	}
 
 	public function stop() {
@@ -69,7 +73,10 @@ class Recorder {
 			return;
 		}
 
-		$this->storage->write($this->_file(true), $img->getImageBlob());
+		try {
+			$this->storage->write($this->_file(true), $img->getImageBlob());
+		}
+		catch (\Exception $e) {}
 	}
 
 	public function add_timeline(ImgTimeline $timeline) {
