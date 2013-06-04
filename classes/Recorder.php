@@ -26,7 +26,13 @@ class Recorder {
 		return $this->date_dir.'/'.($inc?$this->frame++:$this->frame).'.jpg';
 	}
 
+	protected function _preview_file() {
+		return 'previews/'.$this->date_dir.'.jpg';
+	}
+
 	public function start() {
+		echo "\nRecording started\n";
+
 		$this->started = time();
 		$this->date_dir = date('Y-m-d_H:i:s', $this->started);
 		$this->frame = 0;
@@ -51,6 +57,8 @@ class Recorder {
 	}
 
 	public function stop() {
+		echo "\nRecording stopped\n";
+
 		$this->started = false;
 		$this->last_run = time();
 	}
@@ -75,6 +83,11 @@ class Recorder {
 
 		try {
 			$this->storage->write($this->_file(true), $img->getImageBlob());
+
+			// Preview
+			if ($this->frame == 4) {
+				$this->storage->write($this->_preview_file(), $img->getImageBlob());
+			}
 		}
 		catch (\Exception $e) {}
 	}
