@@ -13,7 +13,7 @@ $storage = \DotsUnited\Cabinet\Cabinet::factory($config['cabinet_adapter'], $con
 
 
 // The business
-$cam = Cam::forge($config['cam_ip'], $config['cam_port'])->connect();
+$cam = Cam::forge($config['cam_ip'], $config['cam_port'], $config['cam_username'], $config['cam_password'])->connect();
 $timeline = ImgTimeline::forge($config['timeline_size'])->set_debug(true);
 $recorder = Recorder::forge($config['record_min_length'], $storage);
 

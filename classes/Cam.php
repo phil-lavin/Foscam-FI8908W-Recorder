@@ -4,6 +4,8 @@ class Cam {
 	// Settings
 	protected $ip;
 	protected $port;
+	protected $user;
+	protected $pass;
 
 	// Sockets
 	protected $init_sock;
@@ -21,15 +23,6 @@ class Cam {
 			"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00"
 		],
 		[
-			"\x4d", "\x4f", "\x5f", "\x4f", "\x02", "\x00", "\x00", "\x00",
-			"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x1a",
-			"\x00", "\x00", "\x00", "\x1a", "\x00", "\x00", "\x00", "\x61",
-			"\x64", "\x6d", "\x69", "\x6e", "\x00", "\x00", "\x00", "\x00",
-			"\x00", "\x00", "\x00", "\x00", "\x67", "\x34", "\x74", "\x33",
-			"\x77", "\x34", "\x79", "\x31", "\x32", "\x33", "\x00", "\x00",
-			"\x00"
-		],
-		[
 			"\x4d", "\x4f", "\x5f", "\x4f", "\x10", "\x00", "\x00", "\x00",
 			"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00",
 			"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00"
@@ -39,6 +32,11 @@ class Cam {
 			"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x01",
 			"\x00", "\x00", "\x00", "\x01", "\x00", "\x00", "\x00", "\x02"
 		],
+	];
+	protected $user_pass_prefix = [
+		"\x4d", "\x4f", "\x5f", "\x4f", "\x02", "\x00", "\x00", "\x00",
+		"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x1a",
+		"\x00", "\x00", "\x00", "\x1a", "\x00", "\x00", "\x00",
 	];
 	protected $stream_init = [
 		"\x4d", "\x4f", "\x5f", "\x56", "\x00", "\x00", "\x00", "\x00",
@@ -51,19 +49,28 @@ class Cam {
 		"\x00", "\x00", "\x00", "\x00", "\x00", "\x00", "\x00"
 	];
 
-	protected function __construct($ip, $port) {
+	// Constants
+	const USER_PAD_TO = 13;
+	const PASS_PAD_TO = 13;
+
+	protected function __construct($ip, $port, $user, $pass) {
 		// Settings
 		$this->ip = $ip;
 		$this->port = $port;
+		$this->user = $user;
+		$this->pass = $pass;
 
 		// Implode the data
 		$this->_implode($this->connect_strings);
 		$this->_implode($this->stream_init);
 		$this->_implode($this->keep_alive);
+
+		// Inject user/pass into connect data
+		$this->_inject_user_pass($this->user_pass_prefix, $this->connect_strings, 1);
 	}
 
-	public static function forge($ip, $port) {
-		return new static($ip, $port);
+	public static function forge($ip, $port, $user, $pass) {
+		return new static($ip, $port, $user, $pass);
 	}
 
 	protected function _implode(&$data) {
@@ -77,6 +84,26 @@ class Cam {
 		else {
 			$data = implode($data);
 		}
+	}
+
+	protected function _inject_user_pass($prefix, &$data, $index) {
+		// Start with the prefix
+		$u_p_str = implode($prefix);
+
+		// Add username
+		$u_p_str .= $this->user;
+
+		// Pad to USER_PAD_TO
+		$u_p_str .= str_repeat("\x00", static::USER_PAD_TO - strlen($this->user));
+
+		// Add pass
+		$u_p_str .= $this->pass;
+
+		// Pad to PASS_PAD_TO
+		$u_p_str .= str_repeat("\x00", static::PASS_PAD_TO - strlen($this->pass));
+
+		// Inject into $data
+		array_splice($data, $index, 0, $u_p_str);
 	}
 
 	protected function _get_code() {

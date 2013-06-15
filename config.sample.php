@@ -3,6 +3,8 @@
 return array(
 	'cam_ip' => '172.20.0.15',
 	'cam_port' => 80,
+	'cam_username' => 'admin',
+	'cam_password' => '123456',
 	'day_threshold' => 0.97,
 	'night_threshold' => 0.94,
 	'record_min_length' => 30, // Record for at least this long, even if no further movement
