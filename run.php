@@ -11,6 +11,11 @@ $config = require_once('config.php');
 require_once 'libraries/AWSSDKforPHP/sdk.class.php';
 $storage = \DotsUnited\Cabinet\Cabinet::factory($config['cabinet_adapter'], $config[$config['cabinet_settings']]);
 
+// Check user/pass len
+if (strlen($config['cam_username']) > 12 || strlen($config['cam_password']) > 12) {
+	echo "It doesn't appear that the camera protocol supports username or passwords longer than 12 characters. Suggest that you keep them short for good measure.\n";
+	exit(1);
+}
 
 // The business
 try {
