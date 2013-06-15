@@ -109,7 +109,9 @@ class Cam {
 	protected function _get_code() {
 		// Loop strings and send them in turn
 		foreach ($this->connect_strings as $key=>$string) {
-			fwrite($this->init_sock, $string);
+			if ($string && !@fwrite($this->init_sock, $string)) {
+				throw new IOException("A network write to camera failed");
+			}
 
 			// Sleep before we read as the camera can sometimes be a little slow, especially when fragmenting data
 			usleep(200000);
@@ -196,5 +198,4 @@ class Cam {
 	}
 }
 
-
-
+class IOException extends \Exception {}

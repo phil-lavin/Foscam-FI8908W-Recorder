@@ -13,7 +13,14 @@ $storage = \DotsUnited\Cabinet\Cabinet::factory($config['cabinet_adapter'], $con
 
 
 // The business
-$cam = Cam::forge($config['cam_ip'], $config['cam_port'], $config['cam_username'], $config['cam_password'])->connect();
+try {
+	$cam = Cam::forge($config['cam_ip'], $config['cam_port'], $config['cam_username'], $config['cam_password'])->connect();
+}
+catch (\IOException $e) {
+	echo "Failed to connect to the camera - possibly a username/password mismatch?\n";
+	exit(1);
+}
+
 $timeline = ImgTimeline::forge($config['timeline_size'])->set_debug(true);
 $recorder = Recorder::forge($config['record_min_length'], $storage);
 
